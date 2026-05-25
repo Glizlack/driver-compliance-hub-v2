@@ -107,7 +107,9 @@ export const SEO = ({ title, description, path, noindex, jsonLd, image, lang = "
     const displayTitle = pageMeta?.title ?? title;
     const displayDescription = pageMeta?.description ?? description;
     const prevTitle = document.title;
+    const prevLang = document.documentElement.lang;
     document.title = displayTitle;
+    document.documentElement.lang = resolvedLang === "es" ? "es" : "en";
 
     upsertMeta('meta[name="description"]', { name: "description", content: displayDescription });
     upsertMeta('meta[name="robots"]', {
@@ -145,6 +147,7 @@ export const SEO = ({ title, description, path, noindex, jsonLd, image, lang = "
 
     return () => {
       document.title = prevTitle;
+      document.documentElement.lang = prevLang;
       scripts.forEach((script) => script.remove());
     };
   }, [title, description, path, noindex, jsonLd, image, resolvedLang]);
